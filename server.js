@@ -24,7 +24,7 @@ const feedUpdater = new CronJob('0 0 */1 * * *', loadGTFSintoFs) // every hour a
 
 async function start () {
   feedUpdater.start() // start cron job
-  loadGTFSintoFs()
+  await loadGTFSintoFs() // download gtfs first before anything
 
   const host = process.env.$HOST || process.env.HOST || '127.0.0.1'
   const port = process.env.$PORT || process.env.PORT || 3000
