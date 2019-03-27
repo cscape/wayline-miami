@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /realtime
 Disallow: /gtfs.zip
+Disallow: /gtfs-realtime.proto
