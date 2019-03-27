@@ -1,6 +1,8 @@
 require('./functions/tmp-precheck')()
 
 const express = require('express')
+const fs = require('fs')
+const mainRouter = require('./router/index.js')
 const app = express()
 
 const {
@@ -30,6 +32,22 @@ async function start () {
   app.use(express.static('./static', {
     dotfiles: 'ignore'
   }))
+
+  app.use(mainRouter)
+
+  app.use((req, res, next) => {
+    var err = new Error('Not Found')
+    err.status = 404
+    next(err)
+  })
+
+  app.use((err, req, res, next) => {
+    const status = err.status || 500
+    const template = fs.readFileSync('./static/.err.html', 'utf8')
+    const intpl = template.replace(/(\$ERROR_CODE)/gm, status)
+    res.setHeader('Content-Type', 'text/html')
+    res.status(status).send(intpl)
+  })
 
   // Listen the server
   app.listen(port, () => console.log(`Server listening on http://${host}:${port}`))
