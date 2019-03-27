@@ -24,6 +24,10 @@
   "homepage": "https://github.com/cscape/wayline-miami#readme",
   "dependencies": {
     "@wayline/config": "github:cscape/wayline-config",
-    "axios": "^0.18.0"
+    "@wayline/transformer": "github:cscape/wayline-transformer",
+    "axios": "^0.18.0",
+    "cron": "^1.7.0",
+    "express": "^4.16.4",
+    "node-persist": "^3.0.4"
   }
 }
