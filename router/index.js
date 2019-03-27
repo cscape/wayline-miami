@@ -6,13 +6,9 @@ const fs = require('fs')
 const filesrc = dir => path.join(process.cwd(), dir)
 const { TRANSIT_AGENCY = 'Miami-Dade Transit' } = process.env
 
-router.get('/gtfs.zip', (req, res) => {
-  res.sendFile(filesrc('/tmp/gtfs.zip'))
-})
-
-router.get('/realtime', (req, res) => {
-  res.sendFile(filesrc('/tmp/gtfsrt.protobuf'))
-})
+router.get('/realtime/TripUpdates.pb', (req, res) => res.sendFile(filesrc('/tmp/tripupdates.pb')))
+router.get('/realtime/VehiclePositions.pb', (req, res) => res.sendFile(filesrc('/tmp/vehicles.pb')))
+router.get('/gtfs.zip', (req, res) => res.sendFile(filesrc('/tmp/gtfs.zip')))
 
 router.all('/', (req, res) => {
   const template = fs.readFileSync(filesrc('./static/.index.html'), 'utf8')
