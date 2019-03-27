@@ -1,0 +1,29 @@
+{
+  "name": "@wayline/miami-gtfsrt",
+  "private": true,
+  "version": "1.0.2",
+  "description": "Generates GTFS-RT files for Miami-Dade Transit",
+  "main": "module.js",
+  "scripts": {
+    "precommit": "node bumpversion.js",
+    "updateconfig": "npm i cscape/wayline-config"
+  },
+  "keywords": [
+    "wayline",
+    "transit"
+  ],
+  "author": "Cyberscape <info@cyberscape.co>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cscape/wayline-miami/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cscape/wayline-miami.git"
+  },
+  "homepage": "https://github.com/cscape/wayline-miami#readme",
+  "dependencies": {
+    "@wayline/config": "github:cscape/wayline-config",
+    "axios": "^0.18.0"
+  }
+}
