@@ -28,7 +28,6 @@
     "axios": "^0.18.0",
     "cron": "^1.7.0",
     "express": "^4.16.4",
-    "node-persist": "^3.0.4",
-    "protobufjs": "^6.8.8"
+    "node-persist": "^3.0.4"
   }
 }
