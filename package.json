@@ -1,11 +1,10 @@
 {
   "name": "@wayline/miami-gtfsrt",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generates GTFS-RT files for Miami-Dade Transit",
   "main": "module.js",
   "scripts": {
-    "precommit": "node bumpversion.js",
     "updateconfig": "npm i cscape/wayline-config"
   },
   "keywords": [
@@ -30,5 +29,13 @@
     "express": "^4.16.4",
     "gtfs-realtime-bindings": "0.0.4",
     "node-persist": "^3.0.4"
+  },
+  "devDependencies": {
+    "husky": "^1.3.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "node bumpversion.js && git add package.json"
+    }
   }
 }
