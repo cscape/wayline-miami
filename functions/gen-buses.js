@@ -18,7 +18,8 @@ const gtfsReadyBuses = async () => {
         position: new Position({
           latitude: busObj.lat,
           longitude: busObj.lng,
-          bearing: busObj.bearing
+          bearing: busObj.bearing,
+          speed: (busObj.speed * 0.447) // speed from mph to m/s, see [1]
         }),
         timestamp: busObj.timestamp,
         vehicle: new VehicleDescriptor({
@@ -33,3 +34,7 @@ const gtfsReadyBuses = async () => {
 }
 
 module.exports = gtfsReadyBuses
+
+/* [1] I'm assuming the speed is in miles-per-hour, and converting it
+ * to meters-per-second (m/s) because that's what GTFS-RT wants
+ */
