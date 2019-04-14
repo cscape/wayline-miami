@@ -9,7 +9,7 @@ const gtfsReadyBuses = async () => {
   const busFeedEntities = []
   buses.forEach(busObj => {
     const gtfsobj = new FeedEntity({
-      id: busObj.id,
+      id: `BUSID_${busObj.id}`,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
           trip_id: String(busObj.trip_id),
@@ -23,7 +23,7 @@ const gtfsReadyBuses = async () => {
         }),
         timestamp: busObj.timestamp,
         vehicle: new VehicleDescriptor({
-          id: busObj.id,
+          id: `${busObj.id}-SN${busObj.name}`,
           label: busObj.headsign
         })
       })
