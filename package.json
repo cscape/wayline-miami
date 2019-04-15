@@ -1,7 +1,7 @@
 {
   "name": "@wayline/miami-gtfsrt",
   "private": true,
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Generates GTFS-RT files for Miami-Dade Transit",
   "main": "module.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "axios": "^0.18.0",
     "cron": "^1.7.0",
     "express": "^4.16.4",
-    "gtfs-realtime-bindings": "0.0.4",
+    "gtfs-rb": "^0.5.9",
     "node-persist": "^3.0.4",
     "protobufjs": "~6.8.8"
   },
