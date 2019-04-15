@@ -1,17 +1,17 @@
-const realtime = require('gtfs-rb')
+const gtfsRB = require('gtfs-rb').transit_realtime
 
 const GTFSUtil = {
   clone: obj => JSON.parse(JSON.stringify(obj)),
   makeMessageTemplate: (timestamp = Date.now()) =>
-    new realtime.FeedMessage({
-      header: new realtime.FeedHeader({
+    new gtfsRB.FeedMessage({
+      header: new gtfsRB.FeedHeader({
         gtfs_realtime_version: '1.0',
         timestamp
       })
     }),
   genEnglishString: (text) => {
-    const translation = new realtime.TranslatedString()
-    translation.translation.push(new realtime.TranslatedString.Translation({
+    const translation = new gtfsRB.TranslatedString()
+    translation.translation.push(new gtfsRB.TranslatedString.Translation({
       language: 'en',
       text: text
     }))

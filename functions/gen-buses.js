@@ -1,5 +1,6 @@
 const fetchBuses = require('../net/fetch-buses')
-const gtfsRB = require('gtfs-rb')
+const gtfsRB = require('gtfs-rb').transit_realtime
+
 const {
   FeedEntity, VehiclePosition, Position, VehicleDescriptor, TripDescriptor
 } = gtfsRB

@@ -1,5 +1,5 @@
 const gtfsReadyBuses = require('../gen-buses')
-const gtfsRB = require('gtfs-rb')
+const gtfsRB = require('gtfs-rb').transit_realtime
 
 const {
   FeedMessage, FeedHeader
