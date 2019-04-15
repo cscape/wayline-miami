@@ -14,13 +14,12 @@ const vpProtobuf = async (raw = true, writer = null, timestamp = Date.now()) => 
     }),
     entity: busFeedEntities
   })
-  // console.log(exportFeed.Message)
-  const sMsg = exportFeed.Message
+
   const verify = FeedMessage.verify(exportFeed)
   if (verify == null) {
     if (raw) return exportFeed
     else if (writer != null) {
-      return sMsg.encode(exportFeed, writer)
+      return FeedMessage.encode(exportFeed, writer)
     } else throw new Error('No writer interface specified!')
   } else {
     throw new Error('FEED ERROR: ' + verify)
