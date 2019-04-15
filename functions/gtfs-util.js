@@ -1,4 +1,4 @@
-const realtime = require('gtfs-realtime-bindings')
+const realtime = require('gtfs-rb')
 
 const GTFSUtil = {
   clone: obj => JSON.parse(JSON.stringify(obj)),
