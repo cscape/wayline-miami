@@ -15,19 +15,21 @@ const HeadsignsFlatmap = (() => cfg.TSOMobile
 const getAllVehicles = (url = basefeed) => new Promise((resolve, reject) => {
   const locations = []
   const keys = Object.keys(RouteFlatmap)
+  const requests = keys.map(k => axios.get(`${url}PubTrans/GetModuleInfoPublic?Key=UNITS_LOCATION_ROUTE&id=${k}&lan=en`))
 
-  axios.get(`${url}PubTrans/GetModuleInfoPublic`, {
-    params: { Key: 'UNITS_LOCATION_ROUTE', id: r, lan: 'en' }
-  }).then(({ data }) => {
-    const jsonData = JSON.parse(data)
-    const cleaned = PubTransLocations(jsonData)
-    cleaned.forEach(a => locations.push(a))
+  Promise.all(requests).then(responses => {
+    responses.map(({ data }) => {
+      const jsonData = JSON.parse(data)
+      const cleaned = PubTransLocations(jsonData)
+      cleaned.forEach(a => locations.push(a))
+    })
+  }).then(() => {
+    resolve(locations)
   })
 })
 
 const Fetcher = async () => {
   const vehicles = await getAllVehicles()
-  console.log(vehicles)
   return vehicles
 }
 
