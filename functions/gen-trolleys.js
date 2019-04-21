@@ -1,41 +1,37 @@
-const fetchBuses = require('../net/fetch-tso-trolleys')
+const fetchAllVehicles = require('../net/fetch-tso-trolleys')
 const gtfsRB = require('gtfs-rb').transit_realtime
 
 const {
   FeedEntity, VehiclePosition, Position, VehicleDescriptor, TripDescriptor
 } = gtfsRB
 
-const gtfsReadyBuses = async () => {
-  const buses = await fetchBuses()
-  const busFeedEntities = []
-  buses.forEach(busObj => {
+const gtfsReadyTSO = async () => {
+  const vehicles = await fetchAllVehicles()
+  const vehicleEntities = []
+  vehicles.forEach(tsv => {
     const gtfsobj = new FeedEntity({
-      id: `BUSID_${busObj.id}`,
+      id: `TSOID_${tsv.id}`,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
-          trip_id: String(busObj.trip_id),
-          route_id: String(busObj.route_id)
+          // no trip id, merge with MDT
+          route_id: String(tsv.gtfs_route_id)
         }),
         position: new Position({
-          latitude: busObj.lat,
-          longitude: busObj.lng,
-          bearing: busObj.bearing,
-          speed: (busObj.speed * 0.447) // speed from mph to m/s, see [1]
+          latitude: tsv.lat,
+          longitude: tsv.lng,
+          bearing: tsv.bearing
+          // no speed
         }),
-        timestamp: busObj.timestamp,
+        timestamp: tsv.timestamp,
         vehicle: new VehicleDescriptor({
-          id: `${busObj.id}-SN${busObj.name}`,
-          label: busObj.headsign
+          id: `${tsv.id}-${tsv.name_link}`,
+          label: tsv.headsign // may not have headsign, merge with MDT
         })
       })
     })
-    busFeedEntities.push(gtfsobj)
+    vehicleEntities.push(gtfsobj)
   })
-  return busFeedEntities
+  return vehicleEntities
 }
 
-module.exports = gtfsReadyBuses
-
-/* [1] I'm assuming the speed is in miles-per-hour, and converting it
- * to meters-per-second (m/s) because that's what GTFS-RT wants
- */
+module.exports = gtfsReadyTSO
