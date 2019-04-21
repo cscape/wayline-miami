@@ -24,7 +24,7 @@ const gtfsReadyBuses = async () => {
         }),
         timestamp: busObj.timestamp,
         vehicle: new VehicleDescriptor({
-          id: `${busObj.id}-SN${busObj.name}`,
+          id: `${busObj.route_id}-${busObj.name}`,
           label: busObj.headsign
         })
       })

@@ -24,7 +24,7 @@ const gtfsReadyTSO = async () => {
         }),
         timestamp: tsv.timestamp,
         vehicle: new VehicleDescriptor({
-          id: `${tsv.id}-${tsv.name_link}`,
+          id: `${tsv.gtfs_route_id}-${tsv.name_link || tsv.name}`,
           label: tsv.headsign // may not have headsign, merge with MDT
         })
       })
