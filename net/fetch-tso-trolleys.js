@@ -1,7 +1,6 @@
 const axios = require('axios')
 const cfg = require('@wayline/config')
 const { PubTransLocations } = require('@wayline/transformer').TSOMobile
-const { xml2json } = require('@wayline/transformer').utils
 const basefeed = cfg.basefeeds.TSOMobile
 
 const RouteFlatmap = (() => cfg.TSOMobile
