@@ -21,7 +21,11 @@ const getAllVehicles = (url = basefeed) => new Promise((resolve, reject) => {
     responses.map(({ data }) => {
       const jsonData = JSON.parse(data)
       const cleaned = PubTransLocations(jsonData)
-      cleaned.forEach(a => locations.push(a))
+      cleaned.forEach(a => {
+        a.headsign = HeadsignsFlatmap[a.route_id] || null
+        a.gtfs_route_id = RouteFlatmap[a.route_id]
+        locations.push(a)
+      })
     })
   }).then(() => {
     resolve(locations)
