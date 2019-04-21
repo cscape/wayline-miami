@@ -22,8 +22,11 @@ const getAllVehicles = (url = basefeed) => new Promise((resolve, reject) => {
       const jsonData = JSON.parse(data)
       const cleaned = PubTransLocations(jsonData)
       cleaned.forEach(a => {
+        // headsigns are null if its a bus
         a.headsign = HeadsignsFlatmap[a.route_id] || null
         a.gtfs_route_id = RouteFlatmap[a.route_id]
+        // bus names in MDT data (tracked w/ TSO) are shown as "LSF123" with LSF at the start + bus number
+        a.name_link = a.name.indexOf('Bus ') === 0 ? 'LSF' + a.name.split(/\s/)[1] : null
         locations.push(a)
       })
     })
