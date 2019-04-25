@@ -8,6 +8,7 @@ const {
 
 const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
   const allEntities = []
+  const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
     const gtfsobj = new FeedEntity({
       id: `BUSID_${busObj.id}`,
@@ -32,7 +33,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
     allEntities.push(gtfsobj)
   })
 
-  ;([...allTrolleys, ...extraBuses]).forEach(tsv => {
+  grp.forEach(tsv => {
     const gtfsobj = new FeedEntity({
       id: `TSOID_${tsv.id}`,
       vehicle: new VehiclePosition({
@@ -84,8 +85,8 @@ const gtfsReadyEntities = async () => {
   })
 
   const allBuses = Object.values(busesByName)
-
-  return mergeEntities([allBuses, allTrolleys, extraBuses])
+  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses])
+  return allEntities
 }
 
 module.exports = gtfsReadyEntities
