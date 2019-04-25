@@ -5,7 +5,7 @@ const {
   FeedMessage, FeedHeader
 } = gtfsRB
 
-const vpProtobuf = async (raw = true, timestamp = Date.now()) => {
+const vpProtobuf = async (raw = false, timestamp = Date.now()) => {
   const busFeedEntities = await gtfsReadyMDT()
   const exportFeed = new FeedMessage({
     header: new FeedHeader({
