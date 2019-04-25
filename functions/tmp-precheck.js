@@ -5,5 +5,11 @@ const path = require('path')
 // or else bad things happen
 module.exports = () => {
   const dir = path.join(process.cwd(), './tmp')
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir)
+  const realtime = path.join(process.cwd(), './tmp/realtime')
+  const staticDir = path.join(process.cwd(), './tmp/static')
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
+    fs.mkdirSync(realtime)
+    fs.mkdirSync(staticDir)
+  }
 }
