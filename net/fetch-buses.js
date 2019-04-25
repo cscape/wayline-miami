@@ -10,7 +10,7 @@ const Fetcher = async (url = endpoint) => {
     const cleaned = BusesVerbose(xml2json(data))
     return cleaned
   } catch (err) {
-    console.error(`Failed while fetching ${url}: ${err}`)
+    throw new Error(`Failed while fetching ${url}: ${err}`)
   }
 }
 

@@ -16,7 +16,9 @@ const getAllVehicles = (url = basefeed) => new Promise((resolve, reject) => {
   const keys = Object.keys(RouteFlatmap)
   const requests = keys.map(k => axios.get(`${url}PubTrans/GetModuleInfoPublic?Key=UNITS_LOCATION_ROUTE&id=${k}&lan=en`))
 
-  Promise.all(requests).then(responses => {
+  Promise.all(requests).catch(err => {
+    console.error(`Failed fetching TSO data: ${err}`)
+  }).then(responses => {
     responses.map(({ data }) => {
       const jsonData = JSON.parse(data)
       const cleaned = PubTransLocations(jsonData)
