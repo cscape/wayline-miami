@@ -5,9 +5,13 @@ const basefeed = require('@wayline/config').basefeeds.MiamiDadeTransitVerbose //
 const endpoint = basefeed + 'Buses'
 
 const Fetcher = async (url = endpoint) => {
-  const { data } = await axios.get(url)
-  const cleaned = BusesVerbose(xml2json(data))
-  return cleaned
+  try {
+    const { data } = await axios.get(url)
+    const cleaned = BusesVerbose(xml2json(data))
+    return cleaned
+  } catch (err) {
+    console.error(`Failed while fetching ${url}: ${err}`)
+  }
 }
 
 module.exports = Fetcher
