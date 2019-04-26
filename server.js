@@ -3,6 +3,7 @@ require('./functions/tmp-precheck')()
 const express = require('express')
 const fs = require('fs')
 const mainRouter = require('./router/index.js')
+const updateVehiclePositions = require('../functions/protobufs/exec-vp')
 const app = express()
 
 const {
@@ -21,10 +22,15 @@ const loadGTFSintoFs = async () => {
 
 const CronJob = require('cron').CronJob
 const feedUpdater = new CronJob('0 0 */1 * * *', loadGTFSintoFs) // every hour at the 00:00 mark
+const vpSync = new CronJob('*/15 * * * * *', updateVehiclePositions) // every 15 seconds
 
 async function start () {
-  feedUpdater.start() // start cron job
   await loadGTFSintoFs() // download gtfs first before anything
+  await updateVehiclePositions() // wait for Vehicle Positions pb to generate
+
+  // start cron jobs
+  feedUpdater.start()
+  vpSync.start()
 
   const host = process.env.$HOST || process.env.HOST || '127.0.0.1'
   const port = process.env.$PORT || process.env.PORT || 3000
