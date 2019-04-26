@@ -13,12 +13,17 @@ If the GTFS zip is missing data (like the Coral Gables Trolley, Grand Avenue rou
 - [x] All Metrobus locations
 - [ ] All Metrorail locations
 - [ ] All Metromover locations
-- [x] Link TSO Mobile (Miami/Doral/Beach/Aventura + other trolleys) data with MDT GTFS
-- [ ] Link ETA Transit (Coral Gables Trolley) data with MDT GTFS
-- [ ] "Next stop" data from TSO + ETA Transit
-- [ ] Service alerts from TSO Mobile
+- [x] All Trolley locations - link TSO Mobile (Miami/Doral/Beach/Aventura + other trolleys) data with MDT GTFS
+- [ ] Coral Gables Trolley - link ETA Transit data with MDT GTFS
+- [ ] ~"Next stop" data from TSO + ETA Transit~ *Not possible unless making geospatial computations between MDT GTFS stops and TSO/ETA stops. This may be very resource intensive and complicated to do, and may require a new GTFS file* 
+- [ ] Service alerts from TSO Mobile/ some trolleys (not all use service alerts properly)
 - [ ] Service alerts from Coral Gables Trolley
-- [ ] Service alerts from MDT, computationally filtered
+- [ ] Service alerts from Miami-Dade Transit
+- [ ] Trip updates for MDT buses
+- [ ] Trip updates for Metromover
+- [ ] Trip updates for Metrorail
+- [ ] Trip updates for TSO Mobile Trolleys
+- [ ] Trip updates for Coral Gables Trolley
 
 ## License
 
