@@ -20,7 +20,7 @@ const gtfsReadyBuses = async () => {
           latitude: busObj.lat,
           longitude: busObj.lng,
           bearing: busObj.bearing,
-          speed: (busObj.speed * 0.447) // speed from mph to m/s, see [1]
+          speed: (busObj.speed * 0.44704) // speed from mph to m/s, see [1]
         }),
         timestamp: busObj.timestamp,
         vehicle: new VehicleDescriptor({
