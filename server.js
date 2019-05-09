@@ -3,7 +3,7 @@ require('./functions/tmp-precheck')()
 const express = require('express')
 const fs = require('fs')
 const mainRouter = require('./router/index.js')
-const updateVehiclePositions = require('../functions/protobufs/exec-vp')
+const updateVehiclePositions = require('./functions/protobufs/exec-vp')
 const app = express()
 
 const {
@@ -38,6 +38,8 @@ async function start () {
   app.use(express.static('./static', {
     dotfiles: 'ignore'
   }))
+
+  app.use(express.static('./tmp'))
 
   app.use(mainRouter)
 

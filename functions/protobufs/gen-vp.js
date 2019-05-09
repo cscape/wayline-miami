@@ -10,6 +10,7 @@ const vpProtobuf = async (raw = false, timestamp = Date.now()) => {
   const exportFeed = new FeedMessage({
     header: new FeedHeader({
       gtfs_realtime_version: '2.0',
+      incrementality: gtfsRB.FeedHeader.Incrementality.FULL_DATASET,
       timestamp
     }),
     entity: busFeedEntities
@@ -19,7 +20,7 @@ const vpProtobuf = async (raw = false, timestamp = Date.now()) => {
   if (verify == null) {
     if (raw) return exportFeed
     else {
-      return FeedMessage.encodeDelimited(exportFeed).finish()
+      return FeedMessage.encode(exportFeed).finish()
     }
   } else {
     throw new Error('FEED ERROR: ' + verify)
