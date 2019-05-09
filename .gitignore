@@ -9,3 +9,6 @@ logs
 *.log
 *.DS_Store
 tmp/
+oba/
+onebusaway*.jar
+onebusaway*.war
