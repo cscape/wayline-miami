@@ -9,6 +9,9 @@ logs
 *.log
 *.DS_Store
 tmp/
+
+# Transit software spaghetti
 oba/
 onebusaway*.jar
 onebusaway*.war
+transitclock/
