@@ -1,22 +1,41 @@
 const fetchTrolleys = require('../net/fetch-tso-trolleys')
 const fetchBuses = require('../net/fetch-buses')
 const gtfsRB = require('gtfs-rb').transit_realtime
+const mdtRoutes = require('@wayline/config/routes').MiamiDadeTransit
 
 const {
   FeedEntity, VehiclePosition, Position, VehicleDescriptor, TripDescriptor
 } = gtfsRB
+
+const lookupRouteByAlias = alias => {
+  for (let i in mdtRoutes) {
+    if (mdtRoutes[i].route_shortname !== alias) continue
+    return mdtRoutes[i].route_id // gtfs route
+  }
+}
+
+const lookupRouteById = id => {
+  for (let i in mdtRoutes) {
+    if (mdtRoutes[i].route_id !== id) continue
+    return mdtRoutes[i].route_shortname // route name: 120, 119, MIACOR
+  }
+}
 
 const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
   const allEntities = []
   const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
     const vehIdMDT = `${busObj.route_id}-${busObj.name}-MDT`
+    const gtfsRouteId = String(
+      // VERY important for valid data
+      lookupRouteByAlias(busObj.route_id)
+    )
     const gtfsobj = new FeedEntity({
       id: vehIdMDT,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
           trip_id: String(busObj.trip_id),
-          route_id: String(busObj.route_id),
+          route_id: gtfsRouteId,
           schedule_relationship: 'SCHEDULED' // no way to know so this is assumed
         }),
         position: new Position({
@@ -36,7 +55,8 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
   })
 
   grp.forEach(tsv => {
-    const vehId = `${tsv.gtfs_route_id}-${tsv.name_link || tsv.name}-TSO`
+    const routeShortName = lookupRouteById(String(tsv.gtfs_route_id))
+    const vehId = `${routeShortName}-${tsv.name_link || tsv.name}-TSO`
     const gtfsobj = new FeedEntity({
       id: vehId,
       vehicle: new VehiclePosition({
