@@ -10,8 +10,9 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
   const allEntities = []
   const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
+    const vehIdMDT = `${busObj.route_id}-${busObj.name}-MDT`
     const gtfsobj = new FeedEntity({
-      id: `BUSID_${busObj.id}`,
+      id: vehIdMDT,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
           trip_id: String(busObj.trip_id),
@@ -21,12 +22,12 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
         position: new Position({
           latitude: busObj.lat,
           longitude: busObj.lng,
-          bearing: busObj.bearing,
+          bearing: busObj.bearing > 0 ? busObj.bearing : 1, // if northbound, change to 1 degree northeast
           speed: busObj.speed != null ? (busObj.speed * 0.447) : null
         }),
         timestamp: busObj.timestamp,
         vehicle: new VehicleDescriptor({
-          id: `${busObj.route_id}-${busObj.name}`,
+          id: vehIdMDT,
           label: busObj.headsign
         })
       })
@@ -35,8 +36,9 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
   })
 
   grp.forEach(tsv => {
+    const vehId = `${tsv.gtfs_route_id}-${tsv.name_link || tsv.name}-TSO`
     const gtfsobj = new FeedEntity({
-      id: `TSOID_${tsv.id}`,
+      id: vehId,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
           route_id: String(tsv.gtfs_route_id),
@@ -45,11 +47,11 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
         position: new Position({
           latitude: tsv.lat,
           longitude: tsv.lng,
-          bearing: tsv.bearing
+          bearing: tsv.bearing > 0 ? tsv.bearing : 1
         }),
         timestamp: tsv.timestamp,
         vehicle: new VehicleDescriptor({
-          id: `${tsv.gtfs_route_id}-${tsv.name_link || tsv.name}`,
+          id: vehId,
           label: tsv.headsign // May exist, like with Skylake Circulator
         })
       })
