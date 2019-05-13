@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>$TRANSIT_AGENCY GTFS Services</title>
-    <meta name="robots" content="noindex, follow">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style type="text/css">
-      html, body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Ubuntu, 'Helvetica Neue', sans-serif;
-        background-color: #1F1F1F;
-        color: #FFB900;
-      }
-      a {
-        color: #1F1F1F;
-        font-weight: 600;
-        padding: 0 2px;
-        background-color: #FFC83D;
-      }
-      body {
-        margin: 0 auto;
-        max-width: 600px;
-        padding: 0 24px;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <title>$TRANSIT_AGENCY GTFS Services</title>
+  <meta name="robots" content="index, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">body,html{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Ubuntu,'Helvetica Neue',sans-serif;color:#1f1f1f;word-break:break-word}h1,h2,h3,h4,h5,h6{margin-bottom:.5rem;font-weight:700;line-height:1.2}html{line-height:1.3;-webkit-text-size-adjust:100%;background-image:url(bg.svg);background-size:cover;background-position:50% 15%;background-color:#040404}body{margin:0}h1{font-size:2em;margin:.67em 0}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}b,strong{font-weight:bolder}.small,small{font-size:.8em;line-height:1.4}img{border-style:none}a{color:#e74856;border-bottom:1pt solid currentColor;font-weight:600;text-decoration:none;padding:0;background-color:transparent}a:active,a:focus{border-bottom-color:transparent;color:#fff;background-color:#e74856;outline:0}.mt-24{margin-top:24pt}.mb-24{margin-bottom:24pt}.mx-auto{margin-left:auto;margin-right:auto}.py-8{padding-top:8pt;padding-bottom:8pt}.py-12{padding-top:12pt;padding-bottom:12pt}.px-24{padding-left:24pt;padding-right:24pt}.bg-fff{background-color:#fff}.box-600{max-width:600px}*{box-sizing:border-box}.bg-f5{background-color:#f5f5f5}.my-0{margin-top:0;margin-bottom:0}</style>
+</head>
+
+<body>
+  <header class="bg-fff box-600 mt-24 mx-auto px-24 py-8">
     <h1>Welcome to the $TRANSIT_AGENCY GTFS server!</h1>
+  </header>
+
+  <div class="bg-f5 box-600 mx-auto px-24 py-8">
     <h2>API Documentation</h2>
 
     <h3>GET /gtfs.zip</h3>
@@ -32,18 +20,15 @@
 
     <h3>GET /realtime/TripUpdates.pb</h3>
     <p>Returns the realtime Trip Updates feed for $TRANSIT_AGENCY, refreshed every 30 seconds.</p>
-    
+
     <h3>GET /realtime/VehiclePositions.pb</h3>
     <p>Returns the realtime Vehicle Positions feed for $TRANSIT_AGENCY, refreshed every 15 seconds.</p>
-    <br/>
-    <footer>
-      <small>
-        Source code available on <a href="https://github.com/cscape/wayline-miami">GitHub</a> 
-        &copy; 2019 <a href="https://cyberscape.co/">Cyberscape</a>
-        <br/>
-        <small><pre>$PKGNAME ($PKGVERSION)</pre></small>
-      </small>
-    </footer>
-    <br/><br/>
-  </body>
+  </div>
+  <footer class="bg-fff box-600 mb-24 mx-auto px-24 py-12">
+    <div class="small">
+      Source code available on <a href="https://github.com/cscape/wayline-miami">GitHub</a> ($PKGVERSION)
+      <br>&copy; 2019 <a href="https://cyberscape.co/">Cyberscape</a>
+    </div>
+  </footer>
+</body>
 </html>
