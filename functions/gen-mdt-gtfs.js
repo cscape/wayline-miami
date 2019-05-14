@@ -7,14 +7,16 @@ const {
   FeedEntity, VehiclePosition, Position, VehicleDescriptor, TripDescriptor
 } = gtfsRB
 
-const lookupRouteByAlias = alias => {
+const lookupRouteByAlias = c => {
+  const alias = String(c)
   for (let i in mdtRoutes) {
     if (mdtRoutes[i].route_shortname !== alias) continue
     return mdtRoutes[i].route_id // gtfs route
   }
 }
 
-const lookupRouteById = id => {
+const lookupRouteById = c => {
+  const id = String(c)
   for (let i in mdtRoutes) {
     if (mdtRoutes[i].route_id !== id) continue
     return mdtRoutes[i].route_shortname // route name: 120, 119, MIACOR
@@ -28,7 +30,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
     const vehIdMDT = `${busObj.route_id}-${busObj.name}-MDT`
     const gtfsRouteId = String(
       // VERY important for valid data
-      lookupRouteByAlias(busObj.route_shortname)
+      lookupRouteByAlias(busObj.route_id)
     )
     const gtfsobj = new FeedEntity({
       id: vehIdMDT,
