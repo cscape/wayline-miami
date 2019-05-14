@@ -20,5 +20,6 @@ fs.readFile(`./package.json`, 'utf8', (err, data) => {
 
   fs.writeFile(`./package.json`, newContents, 'utf8', (err) => {
     if (err) return console.log(err)
+    process.exit(0)
   })
 })
