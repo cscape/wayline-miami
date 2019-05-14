@@ -1,5 +1,6 @@
 const fetchTrolleys = require('../net/fetch-tso-trolleys')
 const fetchBuses = require('../net/fetch-buses')
+const fetchRail = require('../net/fetch-metrorail')
 const gtfsRB = require('gtfs-rb').transit_realtime
 const mdtRoutes = require('@wayline/config/routes').MiamiDadeTransit
 
@@ -23,7 +24,7 @@ const lookupRouteById = c => {
   }
 }
 
-const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
+const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
   const allEntities = []
   const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
@@ -79,12 +80,46 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
     allEntities.push(gtfsobj)
   })
 
+  allEntities.push(...allTrains)
+
   return allEntities
 }
 
+const generateRailEntities = (railTrains) => {
+  const newTrains = railTrains.map(trainObj => {
+    const vehIdMDT = `${trainObj.route}-${trainObj.id}-MDT`
+    const gtfsRouteId = String(
+      lookupRouteByAlias('RAIL')
+    )
+    const gtfsobj = new FeedEntity({
+      id: vehIdMDT,
+      vehicle: new VehiclePosition({
+        trip: new TripDescriptor({
+          route_id: gtfsRouteId
+        }),
+        position: new Position({
+          latitude: trainObj.lat,
+          longitude: trainObj.lng,
+          bearing: trainObj.bearing,
+          speed: trainObj.speed != null ? (trainObj.speed * 0.447) : null
+        }),
+        timestamp: trainObj.timestamp,
+        vehicle: new VehicleDescriptor({
+          id: vehIdMDT,
+          label: `Cars ${trainObj.cars.join(', ')}`
+        })
+      })
+    })
+    return gtfsobj
+  })
+  return newTrains
+}
+
 const gtfsReadyEntities = async () => {
-  const trolleys = await fetchTrolleys()
   const buses = await fetchBuses()
+  const railTrains = await fetchRail() // Metrorail
+  const trolleys = await fetchTrolleys()
+
   let busesByName = {}
   buses.forEach(b => (busesByName[b.name] = b))
   const extraBuses = []
@@ -109,7 +144,8 @@ const gtfsReadyEntities = async () => {
   })
 
   const allBuses = Object.values(busesByName)
-  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses])
+  const allTrains = generateRailEntities(railTrains)
+  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses, allTrains])
   return allEntities
 }
 
