@@ -28,7 +28,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
   const allEntities = []
   const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
-    const vehIdMDT = `${busObj.route_id}-${busObj.name}-MDT`
+    const vehIdMDT = `${busObj.id}-${busObj.name}-MDT`
     const gtfsRouteId = String(
       // VERY important for valid data
       lookupRouteByAlias(busObj.route_id)
@@ -57,23 +57,25 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
   })
 
   grp.forEach(tsv => {
-    const routeShortName = lookupRouteById(String(tsv.gtfs_route_id))
-    const vehId = `${routeShortName}-${tsv.name_link || tsv.name}-TSO`
+    const vehId = `${tsv.id}-TSO`
+    const shortName = lookupRouteById(tsv.gtfs_route_id)
+    const currentStatus = tsv.at_stop.length > 0 ? gtfsRB.VehiclePosition.VehicleStopStatus.STOPPED_AT : null
     const gtfsobj = new FeedEntity({
       id: vehId,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
-          route_id: String(tsv.gtfs_route_id)
+          route_id: tsv.gtfs_route_id
         }),
         position: new Position({
           latitude: tsv.lat,
           longitude: tsv.lng,
           bearing: tsv.bearing
         }),
+        current_status: currentStatus, // Sometimes a vehicle is at a stop
         timestamp: tsv.timestamp,
         vehicle: new VehicleDescriptor({
           id: vehId,
-          label: tsv.headsign // May exist, like with Skylake Circulator
+          label: `${shortName}. ${tsv.headsign}` // May exist, like with Skylake Circulator
         })
       })
     })
@@ -87,7 +89,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
 
 const generateRailEntities = (railTrains) => {
   const newTrains = railTrains.map(trainObj => {
-    const vehIdMDT = `${trainObj.route}-${trainObj.id}-MDT`
+    const vehIdMDT = `${trainObj.id}-MDT`
     const gtfsRouteId = String(
       lookupRouteByAlias('RAIL')
     )
@@ -106,7 +108,7 @@ const generateRailEntities = (railTrains) => {
         timestamp: trainObj.timestamp,
         vehicle: new VehicleDescriptor({
           id: vehIdMDT,
-          label: `Cars ${trainObj.cars.join(', ')}`
+          label: `${trainObj.route}. Cars ${trainObj.cars.join(', ')}`
         })
       })
     })
