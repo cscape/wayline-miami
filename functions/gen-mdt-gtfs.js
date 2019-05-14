@@ -28,15 +28,14 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
     const vehIdMDT = `${busObj.route_id}-${busObj.name}-MDT`
     const gtfsRouteId = String(
       // VERY important for valid data
-      lookupRouteByAlias(busObj.route_id)
+      lookupRouteByAlias(busObj.route_shortname)
     )
     const gtfsobj = new FeedEntity({
       id: vehIdMDT,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
           trip_id: String(busObj.trip_id),
-          route_id: gtfsRouteId,
-          schedule_relationship: 'SCHEDULED' // no way to know so this is assumed
+          route_id: gtfsRouteId
         }),
         position: new Position({
           latitude: busObj.lat,
@@ -61,8 +60,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
       id: vehId,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
-          route_id: String(tsv.gtfs_route_id),
-          schedule_relationship: 'SCHEDULED'
+          route_id: String(tsv.gtfs_route_id)
         }),
         position: new Position({
           latitude: tsv.lat,
