@@ -1,7 +1,7 @@
 const axios = require('axios')
 const { TrainsVerbose } = require('@wayline/transformer').MiamiDadeTransit
 const { xml2json } = require('@wayline/transformer').utils
-const basefeed = require('@wayline/config').basefeeds.MiamiDadeTransit
+const basefeed = require('@wayline/config').basefeeds.MiamiDadeTransitVerbose
 const endpoint = basefeed + 'Trains'
 
 const Fetcher = async (url = endpoint) => {
