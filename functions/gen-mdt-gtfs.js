@@ -3,6 +3,7 @@ const fetchBuses = require('../net/fetch-buses')
 const fetchRail = require('../net/fetch-metrorail')
 const gtfsRB = require('gtfs-rb').transit_realtime
 const mdtRoutes = require('@wayline/config/routes').MiamiDadeTransit
+const { toLong } = require('@wayline/transformer').utils.makeTimestamp
 
 const {
   FeedEntity, VehiclePosition, Position, VehicleDescriptor, TripDescriptor
@@ -46,7 +47,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
           bearing: busObj.bearing,
           speed: busObj.speed != null ? (busObj.speed * 0.447) : null
         }),
-        timestamp: busObj.timestamp,
+        timestamp: toLong(busObj.timestamp),
         vehicle: new VehicleDescriptor({
           id: vehIdMDT,
           label: busObj.headsign
@@ -72,7 +73,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
           bearing: tsv.bearing
         }),
         currentStatus, // Sometimes a vehicle is at a stop
-        timestamp: tsv.timestamp,
+        timestamp: toLong(tsv.timestamp),
         vehicle: new VehicleDescriptor({
           id: vehId,
           label: `${shortName}. ${tsv.headsign}` // May exist, like with Skylake Circulator
@@ -105,7 +106,7 @@ const generateRailEntities = (railTrains) => {
           bearing: trainObj.bearing,
           speed: trainObj.speed != null ? (trainObj.speed * 0.447) : null
         }),
-        timestamp: trainObj.timestamp,
+        timestamp: toLong(trainObj.timestamp),
         vehicle: new VehicleDescriptor({
           id: vehIdMDT,
           label: `${trainObj.route}. Cars ${trainObj.cars.join(', ')}`
