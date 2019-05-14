@@ -42,7 +42,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
         position: new Position({
           latitude: busObj.lat,
           longitude: busObj.lng,
-          bearing: busObj.bearing > 0 ? busObj.bearing : 1, // if northbound, change to 1 degree northeast
+          bearing: busObj.bearing,
           speed: busObj.speed != null ? (busObj.speed * 0.447) : null
         }),
         timestamp: busObj.timestamp,
@@ -67,7 +67,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses]) => {
         position: new Position({
           latitude: tsv.lat,
           longitude: tsv.lng,
-          bearing: tsv.bearing > 0 ? tsv.bearing : 1
+          bearing: tsv.bearing
         }),
         timestamp: tsv.timestamp,
         vehicle: new VehicleDescriptor({
