@@ -1,11 +1,11 @@
 {
   "name": "@wayline/express",
   "private": true,
-  "version": "1.3.17",
+  "version": "1.3.18",
   "description": "Generates GTFS-RT files for Miami-Dade Transit",
   "main": "server.js",
   "scripts": {
-    "updateconfig": "npm i cscape/wayline-config"
+    "update": "npm i @wayline/config @wayline/transformer gtfs-rb@latest"
   },
   "keywords": [
     "wayline",
