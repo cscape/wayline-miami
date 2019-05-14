@@ -80,7 +80,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
     allEntities.push(gtfsobj)
   })
 
-  allEntities.push(...allTrains)
+  allTrains.forEach(t => allEntities.push(t))
 
   return allEntities
 }
