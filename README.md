@@ -1,6 +1,6 @@
 # Miami-Dade Transit GTFS-RT Server
 
-Web server that generates [GTFS Realtime](https://developers.google.com/transit/gtfs-realtime/) files for Miami-Dade Transit.
+Web server that generates [GTFS Realtime](https://developers.google.com/transit/gtfs-realtime/) data for Miami-Dade Transit.
 
 ## Project Goals
 
@@ -9,6 +9,9 @@ The server should be able to run continuously, serving as both a proxy for the M
 If the GTFS zip is missing data (like the Coral Gables Trolley, Grand Avenue route) then it's assumed that it doesn't exist and therefore shouldn't be linked, interpolated, or backfilled with guessed data.
 
 ## Table of Progress
+
+For Trip Updates, we're using TheTransitClock to generate the realtime data from the Vehicle Positions.
+This is yet to be automated and is still in development. More documentation will follow.
 
 ### Vehicle Positions
 
@@ -29,7 +32,7 @@ If the GTFS zip is missing data (like the Coral Gables Trolley, Grand Avenue rou
 - [ ] Trip updates for MDT buses
 - [ ] Trip updates for Metromover
 - [ ] Trip updates for Metrorail
-- [ ] Trip updates for TSO Mobile Trolleys
+- [x] Trip updates for TSO Mobile Trolleys
 - [ ] Trip updates for Coral Gables Trolley
 
 ## License
