@@ -37,8 +37,8 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
       id: vehIdMDT,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
-          trip_id: String(busObj.trip_id),
-          route_id: gtfsRouteId
+          tripId: String(busObj.trip_id),
+          routeId: gtfsRouteId
         }),
         position: new Position({
           latitude: busObj.lat,
@@ -64,14 +64,14 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
       id: vehId,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
-          route_id: tsv.gtfs_route_id
+          routeId: tsv.gtfs_route_id
         }),
         position: new Position({
           latitude: tsv.lat,
           longitude: tsv.lng,
           bearing: tsv.bearing
         }),
-        current_status: currentStatus, // Sometimes a vehicle is at a stop
+        currentStatus, // Sometimes a vehicle is at a stop
         timestamp: tsv.timestamp,
         vehicle: new VehicleDescriptor({
           id: vehId,
@@ -97,7 +97,7 @@ const generateRailEntities = (railTrains) => {
       id: vehIdMDT,
       vehicle: new VehiclePosition({
         trip: new TripDescriptor({
-          route_id: gtfsRouteId
+          routeId: gtfsRouteId
         }),
         position: new Position({
           latitude: trainObj.lat,

@@ -1,5 +1,6 @@
 const gtfsReadyMDT = require('../gen-mdt-gtfs')
 const gtfsRB = require('gtfs-rb').transit_realtime
+const { toLong } = require('@wayline/transformer').utils.makeTimestamp
 
 const {
   FeedMessage, FeedHeader
@@ -9,9 +10,9 @@ const vpProtobuf = async (raw = false, timestamp = Date.now()) => {
   const busFeedEntities = await gtfsReadyMDT()
   const exportFeed = new FeedMessage({
     header: new FeedHeader({
-      gtfs_realtime_version: '2.0',
+      gtfsRealtimeVersion: '2.0',
       incrementality: gtfsRB.FeedHeader.Incrementality.FULL_DATASET,
-      timestamp
+      timestamp: toLong(timestamp)
     }),
     entity: busFeedEntities
   })
