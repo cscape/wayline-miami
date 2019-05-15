@@ -2,6 +2,7 @@ const fetchTrolleys = require('../net/fetch-tso-trolleys')
 const fetchBuses = require('../net/fetch-buses')
 const fetchRail = require('../net/fetch-metrorail')
 const fetchMovers = require('../net/fetch-movers')
+const fetchCGABLE = require('../net/fetch-cgable')
 const gtfsRB = require('gtfs-rb').transit_realtime
 const mdtRoutes = require('@wayline/config/routes').MiamiDadeTransit
 const { toLong } = require('@wayline/transformer').utils.makeTimestamp
@@ -26,7 +27,7 @@ const lookupRouteById = c => {
   }
 }
 
-const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers]) => {
+const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers, allCGABLE]) => {
   const allEntities = []
   const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
@@ -85,7 +86,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers]
   })
 
   ;[].concat(
-    allTrains, allMovers
+    allTrains, allMovers, allCGABLE
   ).forEach(t => allEntities.push(t))
 
   return allEntities
@@ -152,11 +153,38 @@ const generateMoverEntities = movers => movers.map(moverObj => {
   })
 })
 
+const generateCGEntities = trolleys => trolleys.map(trolleyObj => {
+  const vehId = `${trolleyObj.id}-CG-ETA`
+  let gtfsRouteId = null // default to blank
+
+  switch (trolleyObj.route_id) {
+    case 1: gtfsRouteId = lookupRouteByAlias('CGABLE'); break
+  }
+
+  return new FeedEntity({
+    id: vehId,
+    vehicle: new VehiclePosition({
+      trip: new TripDescriptor({
+        routeId: gtfsRouteId
+      }),
+      position: new Position({
+        latitude: trolleyObj.lat,
+        longitude: trolleyObj.lng
+      }),
+      timestamp: toLong(trolleyObj.timestamp),
+      vehicle: new VehicleDescriptor({
+        id: vehId
+      })
+    })
+  })
+})
+
 const gtfsReadyEntities = async () => {
   const buses = await fetchBuses()
   const railTrains = await fetchRail() // Metrorail
   const movers = await fetchMovers()
   const trolleys = await fetchTrolleys()
+  const cgable = await fetchCGABLE()
 
   let busesByName = {}
   buses.forEach(b => (busesByName[b.name] = b))
@@ -184,7 +212,8 @@ const gtfsReadyEntities = async () => {
   const allBuses = Object.values(busesByName)
   const allTrains = generateRailEntities(railTrains)
   const allMovers = generateMoverEntities(movers)
-  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses, allTrains, allMovers])
+  const allCGABLE = generateCGEntities(cgable)
+  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses, allTrains, allMovers, allCGABLE])
   return allEntities
 }
 
