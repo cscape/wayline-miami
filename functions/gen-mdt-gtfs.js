@@ -1,6 +1,7 @@
 const fetchTrolleys = require('../net/fetch-tso-trolleys')
 const fetchBuses = require('../net/fetch-buses')
 const fetchRail = require('../net/fetch-metrorail')
+const fetchMovers = require('../net/fetch-movers')
 const gtfsRB = require('gtfs-rb').transit_realtime
 const mdtRoutes = require('@wayline/config/routes').MiamiDadeTransit
 const { toLong } = require('@wayline/transformer').utils.makeTimestamp
@@ -25,7 +26,7 @@ const lookupRouteById = c => {
   }
 }
 
-const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
+const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers]) => {
   const allEntities = []
   const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
@@ -83,7 +84,9 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
     allEntities.push(gtfsobj)
   })
 
-  allTrains.forEach(t => allEntities.push(t))
+  ;[].concat(
+    allTrains, allMovers
+  ).forEach(t => allEntities.push(t))
 
   return allEntities
 }
@@ -118,9 +121,41 @@ const generateRailEntities = (railTrains) => {
   return newTrains
 }
 
+const generateMoverEntities = movers => movers.map(moverObj => {
+  const vehIdMDT = `${moverObj.id}-MV-MDT`
+  let gtfsRouteId = null // default to blank
+
+  switch (moverObj) {
+    case 'INN': gtfsRouteId = lookupRouteByAlias('MMI'); break
+    case 'OMN': gtfsRouteId = lookupRouteByAlias('MMO'); break
+    case 'BKL': gtfsRouteId = lookupRouteByAlias('MMO'); break
+  }
+
+  return new FeedEntity({
+    id: vehIdMDT,
+    vehicle: new VehiclePosition({
+      trip: new TripDescriptor({
+        routeId: gtfsRouteId
+      }),
+      position: new Position({
+        latitude: moverObj.lat,
+        longitude: moverObj.lng,
+        bearing: moverObj.bearing,
+        speed: moverObj.speed != null ? (moverObj.speed * 0.447) : null
+      }),
+      timestamp: toLong(moverObj.timestamp),
+      vehicle: new VehicleDescriptor({
+        id: vehIdMDT,
+        label: `${moverObj.loop_name} Loop. Cars ${moverObj.cars.join(', ')}`
+      })
+    })
+  })
+})
+
 const gtfsReadyEntities = async () => {
   const buses = await fetchBuses()
   const railTrains = await fetchRail() // Metrorail
+  const movers = await fetchMovers()
   const trolleys = await fetchTrolleys()
 
   let busesByName = {}
@@ -148,7 +183,8 @@ const gtfsReadyEntities = async () => {
 
   const allBuses = Object.values(busesByName)
   const allTrains = generateRailEntities(railTrains)
-  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses, allTrains])
+  const allMovers = generateMoverEntities(movers)
+  const allEntities = mergeEntities([allBuses, allTrolleys, extraBuses, allTrains, allMovers])
   return allEntities
 }
 
