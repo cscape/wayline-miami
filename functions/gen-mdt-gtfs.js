@@ -90,7 +90,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains]) => {
 
 const generateRailEntities = (railTrains) => {
   const newTrains = railTrains.map(trainObj => {
-    const vehIdMDT = `${trainObj.id}-MDT`
+    const vehIdMDT = `${trainObj.id}-RL-MDT`
     const gtfsRouteId = String(
       lookupRouteByAlias('RAIL')
     )
