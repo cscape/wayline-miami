@@ -125,7 +125,7 @@ const generateMoverEntities = movers => movers.map(moverObj => {
   const vehIdMDT = `${moverObj.id}-MV-MDT`
   let gtfsRouteId = null // default to blank
 
-  switch (moverObj) {
+  switch (moverObj.loop_id) {
     case 'INN': gtfsRouteId = lookupRouteByAlias('MMI'); break
     case 'OMN': gtfsRouteId = lookupRouteByAlias('MMO'); break
     case 'BKL': gtfsRouteId = lookupRouteByAlias('MMO'); break
@@ -146,7 +146,7 @@ const generateMoverEntities = movers => movers.map(moverObj => {
       timestamp: toLong(moverObj.timestamp),
       vehicle: new VehicleDescriptor({
         id: vehIdMDT,
-        label: `${moverObj.loop_name} Loop. Cars ${moverObj.cars.join(', ')}`
+        label: `${moverObj.loop_id} Loop. Cars ${moverObj.cars.join(', ')}`
       })
     })
   })
