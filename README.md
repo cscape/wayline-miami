@@ -1,4 +1,4 @@
-# Miami-Dade Transit GTFS-RT Server
+# ![Miami-Dade Transit GTFS-RT Server](static/micro-express.svg)
 
 Web server that generates [GTFS Realtime](https://developers.google.com/transit/gtfs-realtime/) Vehicle Positions data for Miami-Dade Transit.
 
