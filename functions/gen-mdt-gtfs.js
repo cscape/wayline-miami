@@ -19,13 +19,13 @@ const lookupRouteByAlias = c => {
   }
 }
 
-const lookupRouteById = c => {
-  const id = String(c)
-  for (let i in mdtRoutes) {
-    if (mdtRoutes[i].route_id !== id) continue
-    return mdtRoutes[i].route_shortname // route name: 120, 119, MIACOR
-  }
-}
+// const lookupRouteById = c => {
+//   const id = String(c)
+//   for (let i in mdtRoutes) {
+//     if (mdtRoutes[i].route_id !== id) continue
+//     return mdtRoutes[i].route_shortname // route name: 120, 119, MIACOR
+//   }
+// }
 
 const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers, allCGABLE]) => {
   const allEntities = []
