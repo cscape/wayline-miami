@@ -25,15 +25,12 @@ const feedUpdater = new CronJob('0 0 */1 * * *', loadGTFSintoFs) // every hour a
 const vpSync = new CronJob('*/15 * * * * *', updateVehiclePositions) // every 15 seconds
 
 async function start () {
-  await loadGTFSintoFs() // download gtfs first before anything
-  await updateVehiclePositions() // wait for Vehicle Positions pb to generate
+  const host = process.env.$HOST || process.env.HOST || '127.0.0.1'
+  const port = process.env.$PORT || process.env.PORT || 3000
 
   // start cron jobs
   feedUpdater.start()
   vpSync.start()
-
-  const host = process.env.$HOST || process.env.HOST || '127.0.0.1'
-  const port = process.env.$PORT || process.env.PORT || 3000
 
   app.use(express.static('./static', {
     dotfiles: 'ignore'
@@ -59,6 +56,9 @@ async function start () {
 
   // Listen the server
   app.listen(port, () => console.log(`Server listening on http://${host}:${port}`))
+
+  await loadGTFSintoFs() // download gtfs
+  await updateVehiclePositions() // wait for Vehicle Positions pb to generate
 }
 
 start()
