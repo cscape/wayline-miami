@@ -12,11 +12,12 @@ const {
 } = gtfsRB
 
 const lookupRouteByAlias = c => {
-  const alias = String(c)
+  const alias = String(c).toLowerCase()
   for (let i in mdtRoutes) {
-    if (mdtRoutes[i].route_shortname !== alias) continue
+    if (mdtRoutes[i].route_shortname.toLowerCase() !== alias) continue
     return mdtRoutes[i].route_id // gtfs route
   }
+  return null
 }
 
 // const lookupRouteById = c => {
