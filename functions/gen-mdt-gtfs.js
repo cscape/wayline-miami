@@ -51,8 +51,8 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
         }),
         timestamp: toLong(busObj.timestamp),
         vehicle: new VehicleDescriptor({
-          id: vehIdMDT,
-          label: busObj.headsign
+          id: vehIdMDT
+          // label: busObj.headsign
         })
       })
     })
@@ -61,7 +61,7 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
 
   grp.forEach(tsv => {
     const vehId = `${tsv.id}-TSO`
-    const shortName = lookupRouteById(tsv.gtfs_route_id)
+    // const shortName = lookupRouteById(tsv.gtfs_route_id)
     const currentStatus = tsv.at_stop.length > 0 ? gtfsRB.VehiclePosition.VehicleStopStatus.STOPPED_AT : null
     const gtfsobj = new FeedEntity({
       id: vehId,
@@ -77,8 +77,8 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
         currentStatus, // Sometimes a vehicle is at a stop
         timestamp: toLong(tsv.timestamp),
         vehicle: new VehicleDescriptor({
-          id: vehId,
-          label: `${shortName}. ${tsv.headsign}` // May exist, like with Skylake Circulator
+          id: vehId
+          // label: `${shortName}. ${tsv.headsign}` // May exist, like with Skylake Circulator
         })
       })
     })
@@ -112,8 +112,8 @@ const generateRailEntities = (railTrains) => {
         }),
         timestamp: toLong(trainObj.timestamp),
         vehicle: new VehicleDescriptor({
-          id: vehIdMDT,
-          label: `${trainObj.route}. Cars ${trainObj.cars.join(', ')}`
+          id: vehIdMDT
+          // label: `${trainObj.route}. Cars ${trainObj.cars.join(', ')}`
         })
       })
     })
@@ -130,6 +130,8 @@ const generateMoverEntities = movers => movers.map(moverObj => {
     case 'INN': gtfsRouteId = lookupRouteByAlias('MMI'); break
     case 'OMN': gtfsRouteId = lookupRouteByAlias('MMO'); break
     case 'BKL': gtfsRouteId = lookupRouteByAlias('MMO'); break
+    // OTR = Outer Loop
+    // FUL = Full Loop
   }
 
   return new FeedEntity({
@@ -146,8 +148,8 @@ const generateMoverEntities = movers => movers.map(moverObj => {
       }),
       timestamp: toLong(moverObj.timestamp),
       vehicle: new VehicleDescriptor({
-        id: vehIdMDT,
-        label: `${moverObj.loop_id} Loop. Cars ${moverObj.cars.join(', ')}`
+        id: vehIdMDT
+        // label: `${moverObj.loop_id} Loop. Cars ${moverObj.cars.join(', ')}`
       })
     })
   })
