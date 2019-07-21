@@ -5,7 +5,7 @@ const genVP = require('./gen-vp')
 const SaveVehiclePositions = async () => {
   console.log('Generating VehiclePositions')
   const binaryData = await genVP()
-  const output = path.join(process.cwd(), `./tmp/realtime/VehiclePositions.pb`)
+  const output = path.join(__dirname, `../../tmp/realtime/VehiclePositions.pb`)
   await fs.writeFileSync(output, binaryData)
   console.log('Saved VehiclePositions')
   return output
