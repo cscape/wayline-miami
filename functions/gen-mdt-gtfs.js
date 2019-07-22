@@ -63,7 +63,6 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
   grp.forEach(tsv => {
     const vehId = `${tsv.id}-TSO`
     // const shortName = lookupRouteById(tsv.gtfs_route_id)
-    const currentStatus = tsv.at_stop.length > 0 ? gtfsRB.VehiclePosition.VehicleStopStatus.STOPPED_AT : null
     const gtfsobj = new FeedEntity({
       id: vehId,
       vehicle: new VehiclePosition({
@@ -75,7 +74,6 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
           longitude: tsv.lng,
           bearing: tsv.bearing
         }),
-        currentStatus, // Sometimes a vehicle is at a stop
         timestamp: toLong(tsv.timestamp),
         vehicle: new VehicleDescriptor({
           id: vehId
