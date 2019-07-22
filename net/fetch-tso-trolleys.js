@@ -27,6 +27,7 @@ const getAllVehicles = (url = basefeed) => new Promise((resolve, reject) => {
         a.headsign = HeadsignsFlatmap[a.route_id] || null
         a.gtfs_route_id = RouteFlatmap[a.route_id]
         // bus names in MDT data (tracked w/ TSO) are shown as "LSF123" with LSF at the start + bus number
+        // NOTE: Also buses like AT5779 on MDT tracker but "5779" on TSO, account for this! (only MDT agency)
         a.name_link = a.name.indexOf('Bus ') === 0 ? 'LSF' + a.name.split(/\s/)[1] : null
         locations.push(a)
       })

@@ -30,7 +30,6 @@ const lookupRouteByAlias = c => {
 
 const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers, allCGABLE]) => {
   const allEntities = []
-  const grp = [].concat(allTrolleys, extraBuses)
   allBuses.forEach(busObj => {
     const vehIdMDT = `${busObj.id}-${busObj.name}-MDT`
     const gtfsRouteId = String(
@@ -60,9 +59,36 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
     allEntities.push(gtfsobj)
   })
 
-  grp.forEach(tsv => {
+  // TSO Trolleys
+  allTrolleys.forEach(tsv => {
     const vehId = `${tsv.id}-TSO`
     // const shortName = lookupRouteById(tsv.gtfs_route_id)
+    const gtfsobj = new FeedEntity({
+      id: vehId,
+      vehicle: new VehiclePosition({
+        trip: new TripDescriptor({
+          routeId: tsv.gtfs_route_id,
+          // ADDED because most trolleys don't strictly adhere to the schedule
+          scheduleRelationship: TripDescriptor.ScheduleRelationship.ADDED
+        }),
+        position: new Position({
+          latitude: tsv.lat,
+          longitude: tsv.lng,
+          bearing: tsv.bearing
+        }),
+        timestamp: toLong(tsv.timestamp),
+        vehicle: new VehicleDescriptor({
+          id: vehId
+          // label: `${shortName}. ${tsv.headsign}` // May exist, like with Skylake Circulator
+        })
+      })
+    })
+    allEntities.push(gtfsobj)
+  })
+
+  // Contracted MDT buses
+  extraBuses.forEach(tsv => {
+    const vehId = `${tsv.id}-LSF-TSO`
     const gtfsobj = new FeedEntity({
       id: vehId,
       vehicle: new VehiclePosition({
@@ -77,7 +103,6 @@ const mergeEntities = ([allBuses, allTrolleys, extraBuses, allTrains, allMovers,
         timestamp: toLong(tsv.timestamp),
         vehicle: new VehicleDescriptor({
           id: vehId
-          // label: `${shortName}. ${tsv.headsign}` // May exist, like with Skylake Circulator
         })
       })
     })
