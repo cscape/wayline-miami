@@ -8,6 +8,7 @@ const SaveVehiclePositions = async () => {
   const output = path.join(__dirname, `../../tmp/realtime/VehiclePositions.pb`)
   await fs.writeFileSync(output, binaryData)
   console.log('Saved VehiclePositions')
+  process.env.VP_UPDATE_COUNT = Number(process.env.VP_UPDATE_COUNT) + 1
   return output
 }
 

@@ -11,6 +11,8 @@ const {
   TRANSIT_GTFS_FEED = 'https://www.miamidade.gov/transit/googletransit/current/google_transit.zip'
 } = process.env
 
+process.env.VP_UPDATE_COUNT = 0
+
 const loadGTFSintoFs = async () => {
   console.log(`Downloading GTFS feed`)
   const bin = await require('./net/fetch-gtfs')(TRANSIT_GTFS_FEED)
