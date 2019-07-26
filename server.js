@@ -3,7 +3,8 @@ require('./functions/tmp-precheck')()
 const express = require('express')
 const fs = require('fs')
 const mainRouter = require('./router/index.js')
-const SaveVehiclePositions = require('./functions/protobufs/exec-vp')
+const keepAlive = require('./router/keepAlive.js')
+const RefreshVP = require('./functions/refresh-vp')
 const app = express()
 
 const {
@@ -25,18 +26,14 @@ const loadGTFSintoFs = async () => {
 const CronJob = require('cron').CronJob
 const feedUpdater = new CronJob('0 0 */1 * * *', loadGTFSintoFs) // every hour at the 00:00 mark
 
-// Recursively refresh VehiclePositions
-const RefreshVP = async () => {
-  await SaveVehiclePositions()
-  setTimeout(RefreshVP, 10000)
-}
-
 async function start () {
   const host = process.env.$HOST || process.env.HOST || '127.0.0.1'
   const port = process.env.$PORT || process.env.PORT || 3000
 
   // start cron jobs
   feedUpdater.start()
+
+  app.use('/realtime', keepAlive)
 
   app.use(express.static('./static', {
     dotfiles: 'ignore'
