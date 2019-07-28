@@ -22,12 +22,12 @@ Generated GTFS Realtime data **must** follow the structure and underlying data t
 - [x] All Metromover locations
 - [x] All Trolley locations - link TSO Mobile (Miami/Doral/Beach/Aventura + other trolleys) data with MDT GTFS
 - [x] Coral Gables Trolley - link ETA Transit data with MDT GTFS
-
-### Service Alerts
-
-- [ ] Service alerts from TSO Mobile/ some trolleys (not all use service alerts properly)
-- [ ] Service alerts from Coral Gables Trolley
-- [ ] Service alerts from Miami-Dade Transit
+- [ ] Tri-Rail train locations
+- [ ] SFRTA connector locations
+- [ ] Broward County Transit bus locations
+- [ ] Trolley (Broward) locations - TSO Mobile data
+- [ ] Palm Tran bus locations
+- [ ] Trolley (Palm Beach) locations - link TSO data
 
 ## License
 
