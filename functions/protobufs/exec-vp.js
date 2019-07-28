@@ -12,11 +12,11 @@ const SaveVehiclePositions = async (agencyId) => {
 
   console.log(`${name}: Generating VehiclePositions`)
 
-  const binaryData = await generateVP(entityGenerateAsync, Date.now())
+  const protobuf = await generateVP(entityGenerateAsync, Date.now())
   const output = path.join(__dirname, `../../tmp/realtime/${agencyId}.pb`)
 
   try {
-    await fs.writeFileSync(output, binaryData)
+    await fs.writeFileSync(output, protobuf)
     console.log(`${name}: Saved VehiclePositions`)
   } catch (err) {
     console.error(`${name}: Failed to save VehiclePositions`, err)
