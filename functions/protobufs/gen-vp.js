@@ -5,10 +5,10 @@ const {
   FeedMessage, FeedHeader
 } = gtfsRB
 
-const generateVP = async (generatorFnAsync, timestamp = Date.now()) => {
-  if (generatorFnAsync == null) throw new Error('GTFS-RT feed generator cannot be null')
+const generateVP = async (entityGenerateAsync, timestamp = Date.now()) => {
+  if (entityGenerateAsync == null) throw new Error('GTFS-RT feed generator cannot be null')
 
-  const vehicleFeedEntities = await generatorFnAsync()
+  const vehicleFeedEntities = await entityGenerateAsync()
   const exportFeed = new FeedMessage({
     header: new FeedHeader({
       gtfsRealtimeVersion: '2.0',
