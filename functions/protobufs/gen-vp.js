@@ -6,7 +6,7 @@ const {
   FeedMessage, FeedHeader
 } = gtfsRB
 
-const vpProtobuf = async (raw = false, timestamp = Date.now()) => {
+const vpProtobuf = async (timestamp = Date.now()) => {
   const busFeedEntities = await gtfsReadyMDT()
   const exportFeed = new FeedMessage({
     header: new FeedHeader({
@@ -19,10 +19,7 @@ const vpProtobuf = async (raw = false, timestamp = Date.now()) => {
 
   const verify = FeedMessage.verify(exportFeed)
   if (verify == null) {
-    if (raw) return exportFeed
-    else {
-      return FeedMessage.encode(exportFeed).finish()
-    }
+    return FeedMessage.encode(exportFeed).finish()
   } else {
     throw new Error('FEED ERROR: ' + verify)
   }
