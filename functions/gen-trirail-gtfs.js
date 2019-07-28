@@ -25,7 +25,9 @@ const validateRouteId = id => {
 }
 
 const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
-  const vehId = `${vehObj.id}-TR-ETA` // Equipment ID (unique)
+  // Would generate ID's like '517-949-ETA' (middle is train #)
+  const trainId = (!!vehObj.train_id) === true ? `-${vehObj.train_id}` : ``
+  const vehId = `${vehObj.id}${trainId}-ETA` // Equipment ID (unique)
   let gtfsRouteId = null // default to blank
 
   switch (vehObj.route_id) {
