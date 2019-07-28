@@ -15,9 +15,9 @@ const getLastUpdateTime = () => new Promise((resolve, reject) => {
 module.exports = async (req, res, next) => {
   const lut = await getLastUpdateTime()
 
-  // 20 seconds without an update
+  // 35 seconds without an update
   // so trigger recursion loop again
-  if (Date.now() - 20000 > lut) {
+  if (Date.now() - 35000 > lut) {
     RefreshVP()
   }
 
