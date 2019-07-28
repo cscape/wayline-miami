@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const genVP = require('./gen-vp')
+const generateVP = require('./gen-vp')
 const agencyModel = require('../../lib/agency-models')
 
 /**
@@ -12,7 +12,7 @@ const SaveVehiclePositions = async (agencyId) => {
 
   console.log(`${name}: Generating VehiclePositions`)
 
-  const binaryData = await genVP(entityGenerateAsync, Date.now())
+  const binaryData = await generateVP(entityGenerateAsync, Date.now())
   const output = path.join(__dirname, `../../tmp/realtime/${agencyId}.pb`)
 
   try {
