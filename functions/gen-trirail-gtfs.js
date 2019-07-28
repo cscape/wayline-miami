@@ -16,13 +16,29 @@ const lookupRouteByAlias = c => {
   return null
 }
 
+const validateRouteId = id => {
+  const sId = String(id)
+  for (let i in masterRouteMaps) {
+    if (masterRouteMaps[i].route_id === sId) return sId
+  }
+  return null
+}
+
 const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
   const vehId = `${vehObj.id}-TR-ETA` // Equipment ID (unique)
   let gtfsRouteId = null // default to blank
 
   switch (vehObj.route_id) {
     case 1: // TRI-RAIL train route. Either of TRSB/TRNB (Southbound/Northbound)
-      gtfsRouteId = lookupRouteByAlias('TRSB'); break
+      if (vehObj.pattern_id === 1) gtfsRouteId = lookupRouteByAlias('TRNB')
+      if (vehObj.pattern_id === 2) gtfsRouteId = lookupRouteByAlias('TRSB')
+      break
+    default:
+      // Prevents temporary routes (i.e. Bus Bridge) from showing up on feed
+      const rId = validateRouteId(vehObj.route_id)
+      if (rId == null) return
+      gtfsRouteId = rId
+      break
   }
 
   return new FeedEntity({
@@ -30,6 +46,7 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
     vehicle: new VehiclePosition({
       trip: new TripDescriptor({
         routeId: gtfsRouteId
+        // vehObj.schedule_id might be used for the GTFS Realtime tripId
       }),
       position: new Position({
         latitude: vehObj.lat,
@@ -41,7 +58,7 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
       })
     })
   })
-})
+}).filter(a => a != null) // vehicles flagged as invalid won't be put in
 
 const gtfsReadyEntities = async () => {
   const vehicles = await fetchTriRail()
