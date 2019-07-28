@@ -1,7 +1,7 @@
 {
   "name": "@wayline/express",
   "private": true,
-  "version": "1.4.18",
+  "version": "1.4.19",
   "description": "Generates GTFS-RT files for Miami-Dade Transit",
   "main": "server.js",
   "scripts": {
