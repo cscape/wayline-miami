@@ -7,15 +7,6 @@ const {
   FeedEntity, VehiclePosition, Position, VehicleDescriptor, TripDescriptor
 } = gtfsRB
 
-const lookupRouteByAlias = c => {
-  const alias = String(c).toLowerCase()
-  for (let i in masterRouteMaps) {
-    if (masterRouteMaps[i].route_shortname.toLowerCase() !== alias) continue
-    return masterRouteMaps[i].route_id // gtfs route
-  }
-  return null
-}
-
 const validateRouteId = id => {
   const sId = String(id)
   for (let i in masterRouteMaps) {
@@ -31,8 +22,8 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
 
   switch (vehObj.route_id) {
     case 1: // TRI-RAIL train route. Either of TRSB/TRNB (Southbound/Northbound)
-      if (vehObj.pattern_id === 1) gtfsRouteId = lookupRouteByAlias('NB')
-      if (vehObj.pattern_id === 2) gtfsRouteId = lookupRouteByAlias('SB')
+      if (vehObj.pattern_id === 1) gtfsRouteId = 'NB'
+      if (vehObj.pattern_id === 2) gtfsRouteId = 'SB'
       break
     default:
       // Prevents temporary routes (i.e. Bus Bridge) from showing up on feed
