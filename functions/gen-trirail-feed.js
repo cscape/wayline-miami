@@ -39,9 +39,8 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
     id: vehId,
     vehicle: new VehiclePosition({
       trip: new TripDescriptor({
-        routeId: gtfsRouteId
-        // vehObj.tripID MUST be used for the GTFS Realtime tripId
-        // but it's filtered out in @wayline/transformer for now
+        routeId: gtfsRouteId,
+        tripId: vehObj.trip_id
       }),
       position: new Position({
         latitude: vehObj.lat,
