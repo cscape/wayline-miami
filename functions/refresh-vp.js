@@ -4,7 +4,7 @@ const SaveVehiclePositions = require('./protobufs/exec-vp')
 const RefreshVP = (agencyId) => SaveVehiclePositions(agencyId).then(() => {
   setTimeout(() => {
     RefreshVP(agencyId)
-  }, 10000)
+  }, 15000)
 })
 
 module.exports = RefreshVP
