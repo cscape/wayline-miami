@@ -26,8 +26,7 @@ const validateRouteId = id => {
 
 const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
   // Would generate ID's like '517-949-ETA' (middle is train #)
-  const trainId = (!!vehObj.train_id) === true ? `-${vehObj.train_id}` : ``
-  const vehId = `${vehObj.id}${trainId}-ETA` // Equipment ID (unique)
+  const vehId = `${vehObj.id}-ETA` // Equipment ID (unique)
   let gtfsRouteId = null // default to blank
 
   switch (vehObj.route_id) {
@@ -48,7 +47,8 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
     vehicle: new VehiclePosition({
       trip: new TripDescriptor({
         routeId: gtfsRouteId
-        // vehObj.schedule_id might be used for the GTFS Realtime tripId
+        // vehObj.tripID MUST be used for the GTFS Realtime tripId
+        // but it's filtered out in @wayline/transformer for now
       }),
       position: new Position({
         latitude: vehObj.lat,
