@@ -21,9 +21,11 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
   let gtfsRouteId = null // default to blank
 
   switch (vehObj.route_id) {
-    case 1: // TRI-RAIL train route. Either of TRSB/TRNB (Southbound/Northbound)
-      if (vehObj.pattern_id === 1) gtfsRouteId = 'NB'
-      if (vehObj.pattern_id === 2) gtfsRouteId = 'SB'
+    case 1: // TRI-RAIL train route.
+      // Even though the Pattern ID says 1=NB/2=SB, it's wrong
+      // in reality 1=SB and 2=NB. Not sure why but that's how it is
+      if (vehObj.pattern_id === 1) gtfsRouteId = 'SB'
+      if (vehObj.pattern_id === 2) gtfsRouteId = 'NB'
       break
     default:
       // Prevents temporary routes (i.e. Bus Bridge) from showing up on feed
