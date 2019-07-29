@@ -20,6 +20,7 @@ async function start () {
   // start cron jobs
   feedUpdater.start()
 
+  app.disable('x-powered-by')
   app.use('/api/v1', apiV1)
   app.use('/realtime', keepAlive)
   app.use(express.static('./static', { dotfiles: 'ignore' }))
