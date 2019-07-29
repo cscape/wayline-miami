@@ -4,9 +4,9 @@ const { Vehicles } = require('@wayline/transformer').ETATransit
 const basefeed = cfg.basefeeds.CoralGablesETA
 
 const CancelToken = axios.CancelToken
-const source = CancelToken.source()
 
 const getAllVehicles = async (timeout) => new Promise((resolve, reject) => {
+  const source = CancelToken.source()
   setTimeout(() => { source.cancel('Coral Gables Trolley API timed out.') }, timeout)
 
   axios.get(basefeed, {
