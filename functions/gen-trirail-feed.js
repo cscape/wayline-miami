@@ -31,8 +31,8 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
 
   switch (vehObj.route_id) {
     case 1: // TRI-RAIL train route. Either of TRSB/TRNB (Southbound/Northbound)
-      if (vehObj.pattern_id === 1) gtfsRouteId = lookupRouteByAlias('TRNB')
-      if (vehObj.pattern_id === 2) gtfsRouteId = lookupRouteByAlias('TRSB')
+      if (vehObj.pattern_id === 1) gtfsRouteId = lookupRouteByAlias('NB')
+      if (vehObj.pattern_id === 2) gtfsRouteId = lookupRouteByAlias('SB')
       break
     default:
       // Prevents temporary routes (i.e. Bus Bridge) from showing up on feed
