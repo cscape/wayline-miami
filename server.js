@@ -4,8 +4,7 @@ const express = require('express')
 const fs = require('fs')
 const mainRouter = require('./router/index.js')
 const keepAlive = require('./router/keepAlive.js')
-const RefreshVP = require('./functions/refresh-vp')
-const { fetchAllGTFS } = require('./lib/loopers')
+const { fetchAllGTFS, startAllRefreshVP } = require('./lib/loopers')
 const app = express()
 
 process.env.VP_UPDATE_COUNT = 0
@@ -48,7 +47,7 @@ async function start () {
   app.listen(port, () => console.log(`Server listening on http://${host}:${port}`))
 
   await fetchAllGTFS() // download gtfs
-  RefreshVP()
+  startAllRefreshVP()
 }
 
 start()
