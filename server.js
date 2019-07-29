@@ -4,6 +4,7 @@ const express = require('express')
 const fs = require('fs')
 const mainRouter = require('./router/index.js')
 const keepAlive = require('./router/keepAlive.js')
+const apiV1 = require('./router/v1-api')
 const { fetchAllGTFS, startAllRefreshVP } = require('./lib/loopers')
 const app = express()
 
@@ -19,16 +20,11 @@ async function start () {
   // start cron jobs
   feedUpdater.start()
 
+  app.use('/api/v1', apiV1)
   app.use('/realtime', keepAlive)
-
-  app.use(express.static('./static', {
-    dotfiles: 'ignore'
-  }))
-
+  app.use(express.static('./static', { dotfiles: 'ignore' }))
   app.use(express.static('./tmp'))
-
   app.use(mainRouter)
-
   app.use((req, res, next) => {
     var err = new Error('Not Found')
     err.status = 404
