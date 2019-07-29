@@ -39,8 +39,8 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
     id: vehId,
     vehicle: new VehiclePosition({
       trip: new TripDescriptor({
-        routeId: gtfsRouteId,
-        tripId: vehObj.trip_id
+        tripId: String(vehObj.trip_id),
+        routeId: String(gtfsRouteId)
       }),
       position: new Position({
         latitude: vehObj.lat,
