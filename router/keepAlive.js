@@ -15,6 +15,7 @@ const getLastUpdateTime = (agencyId) => new Promise((resolve, reject) => {
 
 const checkEverythingIsUpdated = async () => {
   for (let agencyId in agencies) {
+    if (!fs.existsSync(filesrc(`./tmp/realtime/${agencyId}.pb`))) continue
     const lut = await getLastUpdateTime(agencyId)
     // 35 seconds without an update
     // so trigger recursion loop again
