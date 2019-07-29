@@ -22,7 +22,7 @@ const SaveVehiclePositions = async (agencyId) => {
     console.error(`${name}: Failed to save VehiclePositions`, err)
   }
 
-  process.env.VP_UPDATE_COUNT = Number(process.env.VP_UPDATE_COUNT) + 1
+  // process.env.VP_UPDATE_COUNT = Number(process.env.VP_UPDATE_COUNT) + 1
   return output
 }
 
