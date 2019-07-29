@@ -1,25 +1,28 @@
 const fs = require('fs')
 const path = require('path')
 const RefreshVP = require('../functions/refresh-vp')
+const agencies = require('../lib/agency-models')
 
 const filesrc = dir => path.join(process.cwd(), dir)
 
-const getLastUpdateTime = () => new Promise((resolve, reject) => {
-  fs.stat(filesrc('./tmp/realtime/VehiclePositions.pb'), (err, stats) => {
+const getLastUpdateTime = (agencyId) => new Promise((resolve, reject) => {
+  fs.stat(filesrc(`./tmp/realtime/${agencyId}.pb`), (err, stats) => {
     if (err) reject(err)
     const timestamp = new Date(stats.mtime).valueOf()
     resolve(timestamp)
   })
 })
 
-module.exports = async (req, res, next) => {
-  const lut = await getLastUpdateTime()
-
-  // 35 seconds without an update
-  // so trigger recursion loop again
-  if (Date.now() - 35000 > lut) {
-    RefreshVP()
+const checkEverythingIsUpdated = async () => {
+  for (let agencyId in agencies) {
+    const lut = await getLastUpdateTime(agencyId)
+    // 35 seconds without an update
+    // so trigger recursion loop again
+    if (Date.now() - 35000 > lut) RefreshVP(agencyId)
   }
+}
 
+module.exports = async (req, res, next) => {
+  await checkEverythingIsUpdated()
   next()
 }
