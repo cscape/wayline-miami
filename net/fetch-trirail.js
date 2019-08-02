@@ -11,7 +11,7 @@ const getAllVehicles = async (timeout) => new Promise((resolve, reject) => {
 
   axios.get(basefeed, {
     cancelToken: source.token,
-    params: { service: 'get_vehicles', token: 'TESTING' }
+    params: { service: 'get_vehicles', includeETAData: 1, orderedETAArray: 1, token: 'TESTING' }
   }).then(response => {
     try {
       const cleanedData = Vehicles(response.data)

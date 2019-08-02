@@ -22,10 +22,9 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
 
   switch (vehObj.route_id) {
     case 1: // TRI-RAIL train route.
-      // Even though the Pattern ID says 1=NB/2=SB, it's wrong
-      // in reality 1=SB and 2=NB. Not sure why but that's how it is
-      if (vehObj.pattern_id === 1) gtfsRouteId = 'SB'
-      if (vehObj.pattern_id === 2) gtfsRouteId = 'NB'
+      // hacky
+      if (vehObj.direction === 'South') gtfsRouteId = 'SB'
+      if (vehObj.direction === 'North') gtfsRouteId = 'NB'
       break
     default:
       // Prevents temporary routes (i.e. Bus Bridge) from showing up on feed
@@ -40,7 +39,8 @@ const generateTriRailEntities = vehicles => vehicles.map(vehObj => {
     vehicle: new VehiclePosition({
       trip: new TripDescriptor({
         tripId: String(vehObj.trip_id),
-        routeId: String(gtfsRouteId)
+        routeId: String(gtfsRouteId),
+        scheduleRelationship: TripDescriptor.ScheduleRelationship.SCHEDULED
       }),
       position: new Position({
         latitude: vehObj.lat,
