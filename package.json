@@ -24,7 +24,7 @@
   "dependencies": {
     "@wayline/config": "github:cscape/wayline-config",
     "@wayline/transformer": "github:cscape/wayline-transformer",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "cron": "^1.7.1",
     "express": "^4.17.1",
     "gtfs-rb": "^1.2.8",
